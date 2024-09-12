@@ -15,7 +15,7 @@ Please note that Interstate supports **Holesky** network at this moment.
 ## Docker
 
 Interstate provides maintained Docker images for the Interstate sidecar.<br>
-Running the sidecar includes several steps
+Running the sidecar includes several steps. This is a high level overview, the steps are provided below:
 1. Run the commit-boost service
   - Update the `cb-config.toml` file
   - Generate `cb.docker-compose.yml` file
@@ -29,7 +29,7 @@ Let's see one by one
 
 ### Run the commit-boost service
 
-#### Update `cb-config.toml` file
+#### 1) Update `cb-config.toml` file
 Before running the commit-boost service, we need to update this file with our own settings.
 ```toml
 [signer]
@@ -39,19 +39,19 @@ secrets_path = "~/register_validator/assigned_data/secrets" # Fixed path to the 
 ```
 You can keep the remaining addresses.
 
-#### Generate `cb.docker-compose.yml` file
+#### 2) Generate `cb.docker-compose.yml` file
 Use the following command to generate the `cb.docker-compose.yml` file for the next step.
 ```bash
 ./commit-boost init --config cb-config.toml
 ```
 
-#### Run the commit-boost service
+#### 3) Run the commit-boost service
 Use the following command to run the commit-boost service
 ```bash
 ./commit-boost start --docker cb.docker-compose.yml
 ```
 
-### Run the interstate-sidecar
+### 4) Run the interstate-sidecar
 
 #### [optional] Check docker network and update it on `docker-compose.yml` file
 In case you are using docker to run the holesky testnet and the validator service, you need to link the docker's network with the sidecar.
@@ -63,7 +63,7 @@ This will show the network interfaces used by docker. Find the interface name wh
 Verify your selection with `docker network inspect [network_name]` command. You can change `[network_name]` with the interface name you've found.
 This command will show the containers which use the network. If you can check the execution & consensus containers on the result, you can use that interface name for next steps.
 
-#### Update `launch.env` file
+#### 5) Update `launch.env` file
 The `launch.env` file is the place where all the environment variables for the sidecar are placed.
 ```bash
 # Beacon client API
@@ -93,7 +93,7 @@ VALIDATOR_INDEXES="put your validator indices"  # Provide your validator indexes
 ```
 You should update these fields with your own settings.
 
-#### Start the interstate-sidecar service
+#### 6) Start the interstate-sidecar service
 
 We already prepared the docker-compose.yml file which can be used to start the sidecar.
 Run the following command:
