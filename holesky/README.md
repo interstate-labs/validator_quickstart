@@ -6,20 +6,43 @@ Please note that Interstate supports **Holesky** network at this moment.
 
 ## Docker
 
-Interstate provides maintained Docker images for the Interstate sidecar.
+Interstate provides maintained Docker images for the Interstate sidecar.<br>
+Running the sidecar includes several steps
+1. Run the commit-boost service
+  - Update the `cb-config.toml` file
+  - Generate `cb.docker-compose.yml` file
+  - Run the commit-boost
+2. Run the interstate-sidecar
 
-1. [Install the Docker Engine](https://docs.docker.com/engine/install/)
-2. [Install the Docker Compose](https://docs.docker.com/compose/install/)
-3. Copy the [Docker Compose configuration](https://github.com/interstate-labs/preconf-network/blob/main/validator-operator-setup/holesky/docker-compose.yml) in a directory of your choice.
-4. In the same directory, copy the [launch.env](https://github.com/interstate-labs/preconf-network/blob/main/validator-operator-setup/holesky/launch.env) file and fill in the required environment variables.
-  - Set generated JWT key.
-    - Copy the content of JWT secret key file which were generated for running beacon node client.
-    - Update the field `JWT_HEX` with the key data.
-  - Enter BLS key.
-    For the `SIGNING_KEY` field in `launch.env` file, you can list your BLS commit signing key.
-  - Update API env variables
+Let's see one by one
 
-Then, in the same directory, run the following command:
+### Run the commit-boost service
+
+#### Update `cb-config.toml` file
+Before running the commit-boost service, we need to update this file with our own settings.
+```toml
+[signer]
+[signer.loader]
+keys_path = "~/register_validator/assigned_data/keys" # Fixed path to the keys folder to run validator
+secrets_path = "~/register_validator/assigned_data/secrets" # Fixed path to the secrets folder to run validator
+```
+You can keep the remaining addresses.
+
+#### Generate `cb.docker-compose.yml` file
+Use the following command to generate the `cb.docker-compose.yml` file for the next step.
+```bash
+./commit-boost init --config cb-config.toml
+```
+
+#### Run the commit-boost service
+Use the following command to run the commit-boost service
+```bash
+./commit-boost start --docker cb.docker-compose.yml
+```
+
+### Run the interstate-sidecar
+We already prepared the docker-compose.yml file which can be used to start the sidecar.
+Run the following command:
 ```bash
 docker compose up
 ```

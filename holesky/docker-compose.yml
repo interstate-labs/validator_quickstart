@@ -12,14 +12,14 @@ services:
       eth-docker_default:
       commit-boost-client_monitoring_network:
 
-  interstate-boost:
-    image: ghcr.io/chainbound/bolt-mev-boost:v0.2.1-alpha
-    container_name: interstate-boost
-    restart: unless-stopped
-    env_file: ./launch.env
-    entrypoint: /bin/sh -c '/app/mev-boost -relay-check -relay $$INTERSTATE_RELAY -addr 0.0.0.0:18550'
-networks:
-  eth-docker_default:
-    external: true
-  commit-boost-client_monitoring_network:
-    external: true
+#   interstate-boost:
+#     image: ghcr.io/chainbound/bolt-mev-boost:v0.2.1-alpha
+#     container_name: interstate-boost
+#     restart: unless-stopped
+#     env_file: ./launch.env
+#     entrypoint: /bin/sh -c '/app/mev-boost -relay-check -relay $$INTERSTATE_RELAY -addr 0.0.0.0:18550'
+# networks:
+#   eth-docker_default:
+#     external: true
+#   commit-boost-client_monitoring_network:
+#     external: true
