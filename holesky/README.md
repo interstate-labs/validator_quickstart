@@ -1,9 +1,3 @@
-# Validators
-
-For validators, integrating Interstate consists in running the Interstate sidecar along with a MEV-Boost maintained by the Interstate team. The source code of both can be found in the [Interstate Github repository](https://github.com/interstate-labs/preconf-network).
-
-In order to install and configure the sidecar, please follow the instructions below choosing your preferred method.
-
 ## Prerequisites
 
 Ensure you have a running beacon client on your machine. Depending on the installation method, you may need to install additional dependencies.
