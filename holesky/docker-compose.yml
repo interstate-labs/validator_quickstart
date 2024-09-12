@@ -10,7 +10,7 @@ services:
     entrypoint: /bin/sh -c '/interstate-sidecar --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb-pbs:18550 --mevboost-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
     networks:
       eth-docker_default:
-      commit-boost-client_monitoring_network:
+      holesky_monitoring_network:
 
 #   interstate-boost:
 #     image: ghcr.io/chainbound/bolt-mev-boost:v0.2.1-alpha
@@ -21,5 +21,5 @@ services:
 networks:
   eth-docker_default:
     external: true
-  commit-boost-client_monitoring_network:
+  holesky_monitoring_network:
     external: true
