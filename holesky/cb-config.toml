@@ -13,4 +13,4 @@ keys_path = "~/register_validator/assigned_data/keys" # Fixed path to the keys f
 secrets_path = "~/register_validator/assigned_data/secrets" # Fixed path to the secrets folder to run validator
 
 [metrics]
-prometheus_config = "./docker/prometheus.yml"
+prometheus_config = "./prometheus.yml"
