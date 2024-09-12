@@ -2,7 +2,7 @@ chain = "Holesky"
 
 [pbs]
 port = 18550
-docker_image = "interstate_pbs" # This need to be updated with the docker image name of interstate-commit-boost
+docker_image = "interstatenetwork/interstate-pbs-module:0.1.2-alpha" # This need to be updated with the docker image name of interstate-commit-boost
 
 [[relays]]
 url = "http://0xa55c1285d84ba83a5ad26420cd5ad3091e49c55a813eee651cd467db38a8c8e63192f47955e9376f6b42f6d190571cb5@37.27.37.181:9062"
