@@ -4,6 +4,8 @@ Interstate is a proposer commitment network that sits on top of Flashbots / MEV 
 
 We are a sidecar that auctions off the transaction inclusion rights to users that seek to buy preconfirmations, and apps that seek to buy blockspace for blockspace futures.
 
+Have an ethereum validator running and run our sidecar as well to begin earning rewards.
+
 ## Prerequisites
 
 Ensure you have a running beacon client on your machine. Depending on the installation method, you may need to install additional dependencies.
