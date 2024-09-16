@@ -49,7 +49,7 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000" # Interstate RPC port (this should be opened on your firewall!)
-      - "18551:18551" # MevBoost proxy port
+      - "18551:18551"
     env_file: ./launch.env
     entrypoint: /bin/sh -c '/interstate-sidecar --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb-pbs:18550 --mevboost-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
     networks:
