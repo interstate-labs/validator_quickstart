@@ -65,22 +65,23 @@ services:
         #       bind:
         #         propagation: rslave
   
-  # interstate-boost:
-  #   # interstate-sidecar:
-  #   image: interstatenetwork/interstate-boost:0.2.1-dev
-  #   # image: bolt/bolt-sidecar:0.1.0-test
-  #   container_name: interstate-boost
-  #   # container_name: interstate-sidecar
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8000:8000" # Interstate RPC port (this should be opened on your firewall!)
-  #     - "18551:18551"
-  #   env_file: ./launch.env
-  #   entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
-  #   # entrypoint: /bin/sh -c '/bolt-sidecar --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --constraints-url http://cb_pbs:18550 --constraints-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
-  #   networks:
-  #     kt-interstate-devnet:
-  #     default:
+  interstate-boost:
+    # interstate-sidecar:
+    image: interstatenetwork/interstate-boost:0.2.1-dev
+    # image: ghcr.io/chainbound/bolt-sidecar:0.1.0
+    # container_name: interstate-boost
+    container_name: mev-sidecar-api
+    restart: unless-stopped
+    ports:
+      - "8000:9061" # Interstate RPC port (this should be opened on your firewall!)
+      - "18551:9062"
+    env_file: ./launch.env
+    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain kurtosis --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT --slot-time 2 --commitment-deadline 100'
+    # entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
+    # entrypoint: /bin/sh -c '/bolt-sidecar --port $$INTERSTATE_RPC_PORT --chain kurtosis --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT --slot-time 2 --commitment-deadline 100'
+    networks:
+      kt-bolt-devnet:
+      default:
 volumes:
   prometheus-data:
     driver: local
