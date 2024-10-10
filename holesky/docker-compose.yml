@@ -1,7 +1,7 @@
 services:
   cb_pbs:
     # image: interstatenetwork/interstate-pbs-module:0.2.1-dev
-    image: interstatenetwork/interstate-pbs-module:0.2.1-dev-feat-cb
+    image: interstatenetwork/interstate-pbs-module:0.2.1-dev-feat-cb-constraints-working
     # image: interstatenetwork/mev-boost:0.1.0-dev
     # image: bolt/bolt-boost:0.1.0-test
     container_name: cb_pbs
