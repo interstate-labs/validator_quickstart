@@ -6,11 +6,42 @@ We are a sidecar that auctions off the transaction inclusion rights to users tha
 
 Have an ethereum validator running and run our sidecar as well to begin earning rewards.
 
-## Prerequisites
+## EL/CL/VL nodes
 
-Ensure you have a running beacon client on your machine. Depending on the installation method, you may need to install additional dependencies.
+Interstate is running on its private network at this moment. To run interstate sidecar, you need to spin up the EL/CL/VC nodes on your machine.
+https://github.com/interstate-labs/interstate-testnet/tree/main/network-configs
+This is the network-configs setup for the private network.
 
-Please note that Interstate supports **Holesky** network at this moment.
+### Spin up nodes with eth-docker
+You can spin up EL/CL/VC nodes with [eth-docker](https://github.com/eth-educators/eth-docker).
+
+#### Clone the eth-docker repo
+Just clone the eth-docker with the following command.
+```bash
+https://github.com/eth-educators/eth-docker
+```
+Inside the eth-docker folder, install the required apps.
+```bash
+./ethd install
+```
+
+#### Config the eth-docker
+Use the following command to enter to the ethd config setup screen.
+```bash
+./ethd config
+```
+1. Select the **Custom Testnet** for **Select the Network** step.
+2. Use the following network-configs for the following form.
+https://github.com/interstate-labs/interstate-testnet/tree/main/network-configs.
+3. Select **Ethereum Nodes** for the next step.
+4. Select **Geth** and **lighthouse** for EL and CL node types.
+5. Select other settings
+
+#### Spin up the nodes
+Use the following command to spin up the nodes.
+```bash
+./ethd up
+```
 
 ## Docker
 
