@@ -57,49 +57,55 @@ Let's see one by one
 
 ### Set the environment variables
 
-#### 1) Update `cb-config.toml` file
+#### 1) Update `cb-config.toml` file for commit-boost
 Before running the sidecar service, we need to update this file with our own settings.
-```toml
-[signer]
-[signer.loader]
-keys_path = "~/register_validator/assigned_data/keys" # Fixed path to the keys folder to run validator
-secrets_path = "~/register_validator/assigned_data/secrets" # Fixed path to the secrets folder to run validator
-```
+
+- Get the genesis time of beacon node by using the api follow
+` beacon_url/eth/v1/beacon/genesis `
+- Update `genesis_time_sec` in `cb-config.toml` file
 You can keep the remaining config settings.
 
-#### 2) Update `launch.env` file
+#### 2) Update `launch.env` file for interstate-sidecar
 The `launch.env` file is the place where all the environment variables for the sidecar are placed.
 ```bash
+# Prepopulated with the setup for eth-docker: https://github.com/eth-educators/eth-docker. You will have to change this if you setup a different way.
+
 # Beacon client API
-BEACON_API_URL="http://consensus:5052"  # eth-docker-consensus-1 (Port 9000)
+BEACON_API_URL="http://cl-1-lighthouse-geth:4000"  # eth-docker-consensus-1 (Port 9000)
 
 # Execution client API
-EXECUTION_API_URL="http://execution:8545"  # eth-docker-execution-1 (Port 8545, assuming it's the JSON-RPC API)
+EXECUTION_API_URL="http://el-1-geth-lighthouse:8545"  # eth-docker-execution-1 (Port 8545, assuming it's the JSON-RPC API)
 
 # Engine API
-ENGINE_API_URL="http://execution:8545"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
+ENGINE_API_URL="http://el-1-geth-lighthouse:8551"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
 
 # Engine API JWT
-JWT_HEX=""  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
+JWT_HEX="0xdc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
 
 # Fee recipient
-FEE_RECIPIENT=""  # Provide your Ethereum address for receiving fees
+FEE_RECIPIENT="0x65D08a056c17Ae13370565B04cF77D2AfA1cB9FA"  # Provide your Ethereum address for receiving fees
 
-# ...
+# The Interstate RPC port. This port must be exposed!
+INTERSTATE_RPC_PORT="9061"  # eth-docker-mev-boost-1 (Port 8000)
 
 # BLS commitment signing key
-SIGNING_KEY="put your BLS commitment signing key"  # Provide the appropriate BLS key
+SIGNING_KEY="18d1c5302e734fd6fbfaa51828d42c4c6d3cbe020c42bab7dd15a2799cf00b82"  # Provide the appropriate BLS key
 
 # The validator indexes for which to accept commitments. Can be specified as a range i.e. "1..96" (includes 96)
-VALIDATOR_INDEXES="put your validator indices"  # Provide your validator indexes
+VALIDATOR_INDEXES="0..63"  # Provide your validator indexes
 
-# ...
+# Genesis fork version for Interstate
+GENESIS_FORK_VERSION="0x10000038"
+
+# Log
+RUST_LOG="bolt_sidecar=trace"
+
 ```
 You should update these fields with your own settings.
 
-### Run the interstate-sidecar
+### Run the interstate-sidecar and commit-boost
 
-#### Start the interstate-sidecar service
+#### Start the interstate-sidecar and commit-boost services
 
 We already prepared the docker-compose.yml file which can be used to start the sidecar.
 Run the following command:
