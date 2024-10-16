@@ -180,34 +180,31 @@ The `launch.env` file is the place where all the environment variables for the s
 # Prepopulated with the setup for eth-docker: https://github.com/eth-educators/eth-docker. You will have to change this if you setup a different way.
 
 # Beacon client API
-BEACON_API_URL="http://cl-1-lighthouse-geth:4000"  # eth-docker-consensus-1 (Port 9000)
+BEACON_API_URL="http://consensus:5052"  # eth-docker-consensus-1 (Port 9000)
 
 # Execution client API
-EXECUTION_API_URL="http://el-1-geth-lighthouse:8545"  # eth-docker-execution-1 (Port 8545, assuming it's the JSON-RPC API)
+EXECUTION_API_URL="http://execution:8545"  # eth-docker-execution-1 (Port 8545, assuming it's the JSON-RPC API)
 
 # Engine API
-ENGINE_API_URL="http://el-1-geth-lighthouse:8551"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
+ENGINE_API_URL="http://execution:8551"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
 
 # Engine API JWT
-JWT_HEX="0xdc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
+JWT_HEX="0x8d584b6fda83df471979118a63494d61ffd7084a149b33be3e0ab8ea92fb4bc9"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
 
 # Fee recipient
-FEE_RECIPIENT="0x65D08a056c17Ae13370565B04cF77D2AfA1cB9FA"  # Provide your Ethereum address for receiving fees
+FEE_RECIPIENT="0x675Fd297A916874d5518CC335f28b7a529A7c3Ac"  # Provide your Ethereum address for receiving fees
 
 # The Interstate RPC port. This port must be exposed!
-INTERSTATE_RPC_PORT="9061"  # eth-docker-mev-boost-1 (Port 8000)
+INTERSTATE_RPC_PORT="9061"  # interstate-boost (Port 9061)
 
 # BLS commitment signing key
-SIGNING_KEY="18d1c5302e734fd6fbfaa51828d42c4c6d3cbe020c42bab7dd15a2799cf00b82"  # Provide the appropriate BLS key
+SIGNING_KEY="0x00bc72598d6ba483ec5aad004e1f7a59121f1a210bb26efe3d682e37e941c475"  # Provide the appropriate BLS key
 
 # The validator indexes for which to accept commitments. Can be specified as a range i.e. "1..96" (includes 96)
-VALIDATOR_INDEXES="0..63"  # Provide your validator indexes
+VALIDATOR_INDEXES="64..79"  # Provide your validator indexes
 
 # Genesis fork version for Interstate
 GENESIS_FORK_VERSION="0x10000038"
-
-# Log
-RUST_LOG="bolt_sidecar=trace"
 
 ```
 You should update these fields with your own settings.
