@@ -1,85 +1,31 @@
-services:
-  cb_pbs:
-    image: interstatenetwork/interstate-pbs-module:0.2.2
-    container_name: cb_pbs
-    ports:
-      - 18550:18550
-    environment:
-      CB_CONFIG: /cb-config.toml
-      METRICS_SERVER: 10000
-    volumes:
-      - ./cb-config.toml:/cb-config.toml:ro
-    networks:
-      kt-bolt-devnet:
-      default:
-        # cb_prometheus:
-        #   image: prom/prometheus:latest
-        #   container_name: cb_prometheus
-        #   ports:
-        #     - 9090:9090
-        #   volumes:
-        #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        #     - ./targets.json:/etc/prometheus/targets.json
-        #     - prometheus-data:/prometheus
+# Prepopulated with the setup for eth-docker: https://github.com/eth-educators/eth-docker. You will have to change this if you setup a different way.
 
-        # cb_grafana:
-        #   image: grafana/grafana:latest
-        #   container_name: cb_grafana
-        #   ports:
-        #     - 3000:3000
-        #   environment:
-        #     - GF_SECURITY_ADMIN_PASSWORD=admin
-        #   volumes:
-        #     - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
-        #     - ./grafana/datasources:/etc/grafana/provisioning/datasources
-        #     - grafana-data:/var/lib/grafana
-        #   depends_on:
-        #     - cb_prometheus
-        #   logging:
-        #     driver: none
+# Beacon client API
+BEACON_API_URL="http://consensus:5052"  # eth-docker-consensus-1 (Port 9000)
 
-        # cb_cadvisor:
-        #   image: gcr.io/cadvisor/cadvisor
-        #   container_name: cb_cadvisor
-        #   ports:
-        #     - 8080:8080
-        #   volumes:
-        #     - type: bind
-        #       source: /var/run/docker.sock
-        #       target: /var/run/docker.sock
-        #       read_only: true
-        #       bind:
-        #         propagation: rslave
-        #     - type: bind
-        #       source: /sys
-        #       target: /sys
-        #       read_only: true
-        #       bind:
-        #         propagation: rslave
-        #     - type: bind
-        #       source: /var/lib/docker/
-        #       target: /var/lib/docker
-        #       read_only: true
-        #       bind:
-        #         propagation: rslave
-  
-  interstate-boost:
-    image: interstatenetwork/interstate-boost:0.2.0
-    container_name: mev-sidecar-api
-    restart: unless-stopped
-    ports:
-      - "8000:9061" # Interstate RPC port (this should be opened on your firewall!)
-      - "18551:9062"
-    env_file: ./launch.env
-    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain kurtosis --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT --slot-time 2 --commitment-deadline 100'
-    networks:
-      kt-bolt-devnet:
-      default:
-volumes:
-  prometheus-data:
-    driver: local
-  grafana-data:
-    driver: local
-networks:
-  kt-bolt-devnet:
-    external: true
+# Execution client API
+EXECUTION_API_URL="http://execution:8545"  # eth-docker-execution-1 (Port 8545, assuming it's the JSON-RPC API)
+
+# Engine API
+ENGINE_API_URL="http://execution:8551"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
+
+# Engine API JWT
+JWT_HEX="0x8d584b6fda83df471979118a63494d61ffd7084a149b33be3e0ab8ea92fb4bc9"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
+
+# Fee recipient
+FEE_RECIPIENT="0x675Fd297A916874d5518CC335f28b7a529A7c3Ac"  # Provide your Ethereum address for receiving fees
+
+# The Interstate RPC port. This port must be exposed!
+INTERSTATE_RPC_PORT="9061"  # eth-docker-mev-boost-1 (Port 8000)
+
+# BLS commitment signing key
+SIGNING_KEY="0x00bc72598d6ba483ec5aad004e1f7a59121f1a210bb26efe3d682e37e941c475"  # Provide the appropriate BLS key
+
+# The validator indexes for which to accept commitments. Can be specified as a range i.e. "1..96" (includes 96)
+VALIDATOR_INDEXES="64..79"  # Provide your validator indexes
+
+# Bolt-enabled relay on Interstate
+# INTERSTATE_RELAY="http://0xa55c1285d84ba83a5ad26420cd5ad3091e49c55a813eee651cd467db38a8c8e63192f47955e9376f6b42f6d190571cb5@162.55.190.235:35235"
+
+# Genesis fork version for Interstate
+GENESIS_FORK_VERSION="0x10000038"
