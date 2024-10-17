@@ -1,0 +1,70 @@
+services:
+  cb_pbs:
+    image: whereasjovially/interstate-pbs-module:0.2.2
+    container_name: cb_pbs
+    ports:
+      - 18550:18550
+    environment:
+      CB_CONFIG: /cb-config.toml
+      METRICS_SERVER: 10000
+    volumes:
+      - ./cb-config.toml:/cb-config.toml:ro
+  cb_prometheus:
+    image: prom/prometheus:latest
+    container_name: cb_prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./targets.json:/etc/prometheus/targets.json
+      - prometheus-data:/prometheus
+  cb_grafana:
+    image: grafana/grafana:latest
+    container_name: cb_grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - cb_prometheus
+    logging:
+      driver: none
+  cb_cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cb_cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+  interstate-boost:
+    image: whereasjovially/interstate-boost:0.2.0
+    container_name: interstate-boost
+    restart: unless-stopped
+    ports:
+      - "8000:8000" # Interstate RPC port (this should be opened on your firewall!)
+      - "18551:18551"
+    env_file: ./launch.env
+    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATOR_INDEXES --beacon-api-url $$BEACON_API_URL --execution-api-url $$EXECUTION_API_URL --engine-api-url $$ENGINE_API_URL --private-key $$SIGNING_KEY --mevboost-url http://cb-pbs:18550 --mevboost-proxy-port 18551 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
+    networks:
+      eth-docker_default:
+
+        #   interstate-boost:
+        #     image: ghcr.io/chainbound/bolt-mev-boost:v0.2.1-alpha
+        #     container_name: interstate-boost
+        #     restart: unless-stopped
+        #     env_file: ./launch.env
+        #     entrypoint: /bin/sh -c '/app/mev-boost -relay-check -relay $$INTERSTATE_RELAY -addr 0.0.0.0:18550'
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+networks:
+  eth-docker_default:
+    external: true
