@@ -133,18 +133,60 @@ There are pre-funded accounts which holds test ETH of the network to use for val
     ),
 ]
 ```
-And here's a guide to register validators for a custom testnet.
-https://parithosh.com/2021/06/09/2021-09-06-eth2-deposits/
+
+#### Clone the config repository for registering validators
+Here's the github repository.
+```
+https://github.com/interstate-labs/register_validator/  
+```
+You may need to ask the github access to this repo
+
+
+#### Install tools for registration
+- Install golang on your system
+- Install **eth2-val-tools** and **ethereal** by using the following commands.
+```
+go install github.com/protolambda/eth2-val-tools@latest
+go install github.com/wealdtech/ethereal/v2@latest
+```
+
+
+#### Generate and store mnemonics for validators and withdrawals
+You can use the following command to generate mnemonics.
+```
+eth2-val-tools mnemonic
+```
+
+#### Create a **secrets.env** file
 
 > TIP: You can use the following secret values for the current testnet.
 ```
+ACC_START_INDEX=
+ACC_END_INDEX=
 DEPOSIT_AMOUNT=32000000000
-FORK_VERSION="0x10000038"
-DEPOSIT_CONTRACT_ADDRESS="0x4242424242424242424242424242424242424242"
+FORK_VERSION=0x10000038
+VALIDATORS_MNEMONIC=""
+WITHDRAWALS_MNEMONIC=""
+DEPOSIT_DATAS_FILE_LOCATION=
+
+DEPOSIT_CONTRACT_ADDRESS=0x4242424242424242424242424242424242424242
+ETH1_FROM_ADDR=
+ETH1_FROM_PRIV=
 FORCE_DEPOSIT=true
+ETH1_NETWORK=
+```
+Decide on how many deposits you would like to perform. Generally this would be (amount of testnet ether you possess)/32. Set the `ACC_START_INDEX` and `ACC_END_INDEX` in **secrets.env** accordingly.
+
+#### Register validators
+- Generate the deposit data by using the following command.
+```
+./build_deposits.sh
+```
+- Register validators by using the following command.
+```
+./exec_deposits.sh
 ```
 
-Also in the exec_deposit script, you should replace `--network$ETH1_NETWORK with --connection=http://162.55.190.235:35245`
 After deposit the test ETHs for validator, you can generate the keystores using the following command.
 ```
 eth2-val-tools keystores --source-mnemonic "$VALIDATORS_MNEMONIC" --insecure --source-min $ACC_START_INDEX --source-max $ACC_END_INDEX
