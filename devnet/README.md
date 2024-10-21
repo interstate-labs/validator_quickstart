@@ -137,7 +137,7 @@ There are pre-funded accounts which holds test ETH of the network to use for val
 #### Clone the config repository for registering validators
 Here's the github repository.
 ```
-https://github.com/interstate-labs/register_validator/  
+https://github.com/interstate-labs/new-validator-register 
 ```
 You may need to ask the github access to this repo
 
