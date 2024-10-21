@@ -1,1 +1,1 @@
-Please use the holesky testnet for now!
+Please use the devnet for now!
