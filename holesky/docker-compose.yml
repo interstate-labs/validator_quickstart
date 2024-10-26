@@ -1,6 +1,6 @@
 services:
   cb_pbs:
-    image: interstatenetwork/interstate-pbs-module:0.2.2
+    image: whereasjovially/interstate-pbs-module:0.2.2
     container_name: cb_pbs
     ports:
       - 18550:18550
@@ -64,7 +64,7 @@ services:
         #         propagation: rslave
   
   interstate-boost:
-    image: interstatenetwork/interstate-boost:0.2.0
+    image: whereasjovially/interstate-boost:0.2.0
     container_name: mev-sidecar-api
     restart: unless-stopped
     ports:
@@ -75,6 +75,13 @@ services:
     networks:
       kt-bolt-devnet:
       default:
+  
+  monitor:
+    image: monitor-app
+    container_name: monitor
+    env_file: ./monitor.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   prometheus-data:
     driver: local
