@@ -24,6 +24,12 @@ services:
     networks:
       eth-docker_default:
       default:
+  monitor:
+    image: monitor-app
+    container_name: monitor
+    env_file: ./monitor.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   prometheus-data:
     driver: local
