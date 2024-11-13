@@ -10,7 +10,7 @@ services:
     volumes:
       - ./cb-config.toml:/cb-config.toml:ro
     networks:
-      eth-docker_default:
+      eth-docker-interstate_default:
       default:
   interstate-boost:
     image: whereasjovially/interstate-boost:0.2.0
@@ -22,7 +22,7 @@ services:
     env_file: ./launch.env
     entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain mainnet --validator-indexes $$VALIDATORS --beacon-api-url $$CONSENSUS_RPC_URL --execution-api-url $$EXECUTION_RPC_URL --engine-api-url $$ENGINE_API_URL --private-key $$BLS_SECRET_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
     networks:
-      eth-docker_default:
+      eth-docker-interstate_default:
       default:
   monitor:
     image: whereasjovially/monitor-app:0.1.0
@@ -36,5 +36,5 @@ volumes:
   grafana-data:
     driver: local
 networks:
-  eth-docker_default:
+  eth-docker-interstate_default:
     external: true
