@@ -20,7 +20,7 @@ services:
       - "8000:9061" # Interstate RPC port (this should be opened on your firewall!)
       - "18551:9062"
     env_file: ./launch.env
-    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain kurtosis --validator-indexes $$VALIDATORS --beacon-api-url $$CONSENSUS_RPC_URL --execution-api-url $$EXECUTION_RPC_URL --engine-api-url $$ENGINE_API_URL --private-key $$BLS_SECRET_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT --slot-time 2 --commitment-deadline 100'
+    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain holesky --validator-indexes $$VALIDATORS --beacon-api-url $$CONSENSUS_RPC_URL --execution-api-url $$EXECUTION_RPC_URL --engine-api-url $$ENGINE_API_URL --private-key $$BLS_SECRET_KEY --mevboost-url http://cb_pbs:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT'
     networks:
       eth-docker_default:
       default:
