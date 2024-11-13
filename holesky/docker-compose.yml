@@ -25,7 +25,7 @@ services:
       eth-docker_default:
       default:
   monitor:
-    image: monitor-app
+    image: whereasjovially/monitor-app:0.1.0
     container_name: monitor
     env_file: ./monitor.env
     volumes:
