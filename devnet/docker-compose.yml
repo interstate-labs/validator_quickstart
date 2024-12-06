@@ -24,12 +24,12 @@ services:
     networks:
       kt-bolt-devnet:
       default:
-  monitor:
-    image: monitor-app
-    container_name: monitor
-    env_file: ./monitor.env
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  # monitor:
+  #   image: monitor-app
+  #   container_name: monitor
+  #   env_file: ./monitor.env
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   prometheus-data:
     driver: local

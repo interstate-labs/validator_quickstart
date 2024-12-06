@@ -1,0 +1,34 @@
+services:
+  cb_pbs:
+    image: whereasjovially/interstate-pbs-module:0.2.2
+    container_name: cb_pbs1
+    ports:
+      - 18553:18550
+    environment:
+      CB_CONFIG: /cb-config.toml
+      METRICS_SERVER: 10000
+    volumes:
+      - ./cb-config.toml:/cb-config.toml:ro
+    networks:
+      kt-bolt-devnet:
+      default:
+  interstate-boost:
+    image: whereasjovially/interstate-boost:0.2.0
+    container_name: mev-sidecar-api1
+    restart: unless-stopped
+    ports:
+      - "8001:9061" # Interstate RPC port (this should be opened on your firewall!)
+      - "18552:9062"
+    env_file: ./launch.env
+    entrypoint: /bin/sh -c '/interstate-boost --port $$INTERSTATE_RPC_PORT --chain kurtosis --validator-indexes $$VALIDATORS --beacon-api-url $$CONSENSUS_RPC_URL --execution-api-url $$EXECUTION_RPC_URL --engine-api-url $$ENGINE_API_URL --private-key $$BLS_SECRET_KEY --mevboost-url http://cb_pbs1:18550 --mevboost-proxy-port 9062 --jwt-hex $$JWT_HEX --fee-recipient $$FEE_RECIPIENT --slot-time 2 --commitment-deadline 100'
+    networks:
+      kt-bolt-devnet:
+      default:
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+networks:
+  kt-bolt-devnet:
+    external: true
