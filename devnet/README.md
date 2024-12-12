@@ -258,10 +258,7 @@ JWT="dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b"  # To gen
 FEE_RECIPIENT="0x8aC112a5540f441cC9beBcC647041A6E0D595B94"  # Provide your Ethereum address for receiving fees
 
 # The Interstate RPC port. This port must be exposed!
-INTERSTATE_RPC_PORT="9061"  # interstate-boost (Port 9061)
-
-# BLS commitment signing key
-SIGNING_KEY="0x00bc72598d6ba483ec5aad004e1f7a59121f1a210bb26efe3d682e37e941c475"  # Provide the appropriate BLS key
+COMMITMENT_PORT="9061"  # interstate-boost (Port 9061)
 
 # The validator indexes for which to accept commitments. Can be specified as a range i.e. "1..96" (includes 96)
 VALIDATOR_INDEXES="64..79"
