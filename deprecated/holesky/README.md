@@ -1,6 +1,6 @@
 ## Interstate
 
-Interstate is a proposer commitment network that sits on top of Flashbots / MEV Boost. It next to nothing for the validator to run, adds next to no additional slash risk, and generates up to 2x additional block rewards on top of MEV-Boost.
+Interstate is a proposer commitment network that sits on top of Flashbots / MEV Boost. Please view docs.interstate.so/research for details on the protocol. 
 
 We are a sidecar that auctions off the transaction inclusion rights to users that seek to buy preconfirmations, and apps that seek to buy blockspace for blockspace futures.
 
@@ -219,10 +219,8 @@ Interstate provides maintained Docker images for the Interstate sidecar.<br>
 Running the sidecar includes several steps. This is a high level overview, the steps are provided below:
 1. Set the environment variables
   - Update the `cb-config.toml` file
-  - Update the `.env.sidecar` file
-  - Update the `.env.collector` file
-  - Update the `.env.extender` file
-2. Run the interstate-sidecar, builder api extneder, constraints collector and commit-boost
+  - Update `launch.env` file
+2. Run the interstate-sidecar
   - Start the interstate-sidecar service
 
 Let's see one by one
@@ -237,8 +235,8 @@ Before running the sidecar service, we need to update this file with our own set
 - Update `genesis_time_sec` in `cb-config.toml` file
 You can keep the remaining config settings.
 
-#### 2) Update `.env.sidecar` file for interstate-sidecar
-The `.env.sidecar` file is the place where all the environment variables for the sidecar are placed.
+#### 2) Update `launch.env` file for interstate-sidecar
+The `launch.env` file is the place where all the environment variables for the sidecar are placed.
 ```bash
 # Prepopulated with the setup for eth-docker: https://github.com/interstate-labs/eth-docker. You will have to change this if you setup a different way.
 
@@ -252,10 +250,10 @@ EXECUTION_API_URL="http://execution:8545"  # eth-docker-execution-1 (Port 8545, 
 ENGINE_API_URL="http://execution:8551"  # eth-docker-execution-1 (Port 8545, assuming it's also the engine API)
 
 # Engine API JWT
-JWT="dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
+JWT_HEX="0x8d584b6fda83df471979118a63494d61ffd7084a149b33be3e0ab8ea92fb4bc9"  # To generate the JWT token run: openssl rand -hex 32 | tr -d "\n" > jwtsecret
 
 # Fee recipient
-FEE_RECIPIENT="0x8aC112a5540f441cC9beBcC647041A6E0D595B94"  # Provide your Ethereum address for receiving fees
+FEE_RECIPIENT="0x675Fd297A916874d5518CC335f28b7a529A7c3Ac"  # Provide your Ethereum address for receiving fees
 
 # The Interstate RPC port. This port must be exposed!
 INTERSTATE_RPC_PORT="9061"  # interstate-boost (Port 9061)
@@ -264,50 +262,15 @@ INTERSTATE_RPC_PORT="9061"  # interstate-boost (Port 9061)
 SIGNING_KEY="0x00bc72598d6ba483ec5aad004e1f7a59121f1a210bb26efe3d682e37e941c475"  # Provide the appropriate BLS key
 
 # The validator indexes for which to accept commitments. Can be specified as a range i.e. "1..96" (includes 96)
-VALIDATOR_INDEXES="64..79"
+VALIDATOR_INDEXES="64..79"  # Provide your validator indexes
 
-# Constraints collector API
-COLLECTOR_URL=http://interstate-constraints-collector:4000
-
-# Constraints collector socket
-COLLECTOR_SOCKET=ws://interstate-constraints-collector:4000/ws
-
-# Builder api proxy port
-BUILDER_PORT=9062
-
-# Slot time in seconds
-SLOT_TIME=2
-
-# Commitment deadline duration
-COMMITMENT_DEADLINE=100
-
-# The name of devnet
-CHAIN=kurtosis
+# Genesis fork version for Interstate
+GENESIS_FORK_VERSION="0x10000038"
 
 ```
 You should update these fields with your own settings.
 
-### 3) Update `.env.extender` file for interstate-sidecar
-The `.env.extender` file is the place where all the environment variables for the builder api extender are placed.
-```bash
-# Listening port
-EXTENDER_PORT=8080
-
-# sidecar urls to be connected to this extender
-SIDECAR_URLS="http://mev-sidecar-api-1:9062,http://mev-sidecar-api-2:9062"
-```
-
-### 4) Update `.env.collector` file for interstate-sidecar
-The `.env.collector` file is the place where all the environment variables for the builder api extender are placed.
-```bash
-# Listening port
-PORT=4000
-
-# Commit boost api
-COMMIT_BOOST=http://cb_pbs:18550
-```
-
-### Run the interstate-sidecar, extender, collector and commit-boost
+### Run the interstate-sidecar and commit-boost
 
 #### Start the interstate-sidecar and commit-boost services
 
