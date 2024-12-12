@@ -1,6 +1,6 @@
 ## Interstate
 
-Interstate is a proposer commitment network that sits on top of Flashbots / MEV Boost. It next to nothing for the validator to run, adds next to no additional slash risk, and generates up to 2x additional block rewards on top of MEV-Boost.
+Interstate is a proposer commitment network that sits on top of Flashbots / MEV Boost. Please view docs.interstate.so/research for details on the protocol.
 
 We are a sidecar that auctions off the transaction inclusion rights to users that seek to buy preconfirmations, and apps that seek to buy blockspace for blockspace futures.
 
