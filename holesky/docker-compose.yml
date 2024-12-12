@@ -21,7 +21,7 @@ services:
     ports:
       - "4000:4000"
     volumes: 
-      - ./.env.collector:/work/interstate-protocol/constraints-collector/.env:ro
+      - ./.config:/work/interstate-protocol/constraints-collector/.env:ro
     networks:
       kt-interstate-devnet:
       default:
@@ -33,7 +33,7 @@ services:
     ports:
       - "8080:8080"
     volumes: 
-      - ./.env.extender:/work/interstate-protocol/builder-api-extend-module/.env:ro
+      - ./.config:/work/interstate-protocol/builder-api-extend-module/.env:ro
     networks:
       kt-interstate-devnet:
       default:
@@ -46,7 +46,7 @@ services:
       - "9061:9061" # Interstate RPC port (this should be opened on your firewall!)
       - "9062:9062"
     volumes: 
-      - ./.env.sidecar/:/work/interstate-protocol/proposer-commitment-network/.env:ro
+      - ./.config/:/work/interstate-protocol/proposer-commitment-network/.env:ro
     networks:
       kt-interstate-devnet:
       default:
@@ -59,7 +59,7 @@ services:
       - "9063:9061" # Interstate RPC port (this should be opened on your firewall!)
       - "9064:9062"
     volumes: 
-      - ./.env.sidecar/:/work/interstate-protocol/proposer-commitment-network/.env:ro
+      - ./.config/:/work/interstate-protocol/proposer-commitment-network/.env:ro
     networks:
       kt-interstate-devnet:
       default:  

@@ -219,9 +219,7 @@ Interstate provides maintained Docker images for the Interstate sidecar.<br>
 Running the sidecar includes several steps. This is a high level overview, the steps are provided below:
 1. Set the environment variables
   - Update the `cb-config.toml` file
-  - Update the `.env.sidecar` file
-  - Update the `.env.collector` file
-  - Update the `.env.extender` file
+  - Update the `.config` file
 2. Run the interstate-sidecar, builder api extneder, constraints collector and commit-boost
   - Start the interstate-sidecar service
 
@@ -237,8 +235,8 @@ Before running the sidecar service, we need to update this file with our own set
 - Update `genesis_time_sec` in `cb-config.toml` file
 You can keep the remaining config settings.
 
-#### 2) Update `.env.sidecar` file for interstate-sidecar
-The `.env.sidecar` file is the place where all the environment variables for the sidecar are placed.
+#### 2) Update `.config` file for interstate-sidecar
+The `.config` file is the place where all the environment variables for the sidecar, extender and collector are placed.
 ```bash
 # Prepopulated with the setup for eth-docker: https://github.com/interstate-labs/eth-docker. You will have to change this if you setup a different way.
 
@@ -281,23 +279,13 @@ COMMITMENT_DEADLINE=100
 # The name of devnet
 CHAIN=kurtosis
 
-```
-You should update these fields with your own settings.
-
-### 3) Update `.env.extender` file for interstate-sidecar
-The `.env.extender` file is the place where all the environment variables for the builder api extender are placed.
-```bash
-# Listening port
+# Listening port of builder api extender
 EXTENDER_PORT=8080
 
 # sidecar urls to be connected to this extender
 SIDECAR_URLS="http://mev-sidecar-api-1:9062,http://mev-sidecar-api-2:9062"
-```
 
-### 4) Update `.env.collector` file for interstate-sidecar
-The `.env.collector` file is the place where all the environment variables for the builder api extender are placed.
-```bash
-# Listening port
+# Listening port of constraints collector
 PORT=4000
 
 # Commit boost api
