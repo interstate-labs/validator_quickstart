@@ -62,7 +62,7 @@ services:
       - ./.config/:/work/interstate-protocol/proposer-commitment-network/.env:ro
     networks:
       kt-interstate-devnet:
-      default:  
+      default: 
 
 volumes:
   prometheus-data:
