@@ -10,9 +10,6 @@ services:
       RUST_LOG: debug
     volumes:
       - ./cb-config.toml:/cb-config.toml:ro
-    networks:
-      kt-interstate-devnet:
-      default:
 
   interstate-constraints-collector:
     image: whereasjovially/interstate-constraints-collector:0.0.1-dev
@@ -22,9 +19,6 @@ services:
       - "4000:4000"
     volumes: 
       - ./.config:/work/interstate-protocol/constraints-collector/.env:ro
-    networks:
-      kt-interstate-devnet:
-      default:
 
   interstate-extender:
     image: whereasjovially/interstate-extender:0.0.1-dev
@@ -34,9 +28,6 @@ services:
       - "8080:8080"
     volumes: 
       - ./.config:/work/interstate-protocol/builder-api-extend-module/.env:ro
-    networks:
-      kt-interstate-devnet:
-      default:
 
   interstate-boost-1:
     image: whereasjovially/interstate-boost:1.1.0-dev
@@ -48,8 +39,8 @@ services:
     volumes: 
       - ./.config/:/work/interstate-protocol/proposer-commitment-network/.env:ro
     networks:
-      kt-interstate-devnet:
-      default:
+      - eth-docker_default
+      - default
 
   interstate-boost-2:
     image: whereasjovially/interstate-boost:1.1.0-dev
@@ -61,8 +52,8 @@ services:
     volumes: 
       - ./.config/:/work/interstate-protocol/proposer-commitment-network/.env:ro
     networks:
-      kt-interstate-devnet:
-      default:  
+      - eth-docker_default
+      - default
 
 volumes:
   prometheus-data:
@@ -70,5 +61,5 @@ volumes:
   grafana-data:
     driver: local
 networks:
-  kt-interstate-devnet:
+  eth-docker_default:
     external: true
