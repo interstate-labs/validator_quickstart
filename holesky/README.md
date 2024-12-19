@@ -8,7 +8,7 @@ Have an ethereum validator running and run our sidecar as well to begin earning 
 
 ## EL/CL/VL nodes
 
-Interstate is running on its private network at this moment. To run interstate sidecar, you need to spin up the EL/CL/VC nodes on your machine.
+To run interstate sidecar, you need to spin up the EL/CL/VC nodes on your machine.
 https://github.com/interstate-labs/interstate-testnet/tree/main/network-configs
 This is the network-configs setup for the private network.
 
